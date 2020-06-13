@@ -3,5 +3,5 @@
 __pycache__
 
 # Virtual Environment
-/venv
-/myvenv
+myvenv/
+venv/
