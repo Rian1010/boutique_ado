@@ -46,3 +46,21 @@ LOGIN_REDIRECT_URL = '/'
     ],
     ```
 - Test the project: `python3 manage.py runserver`
+
+## Media and Statics
+- Use font awesome with link tag and a font awesome kit (Through login) with script tag in base.html
+- Use media and static files
+- In settings.py:
+```python
+STATIC_URL = '/static/'
+# Tells Django where the static files are located at
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+# Where all uploaded media files go
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+```
+- In the main urls.py file:
+```python 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
