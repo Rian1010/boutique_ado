@@ -64,3 +64,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ```python 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
+
+## After migrating the models from the products app
+- Use the fixtures: `python3 manage.py loaddata categories`
+- Start with `categories` since the products need to know which category to go in
+- Then upload all products: `python3 manage.py loaddata products`
