@@ -69,3 +69,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Use the fixtures: `python3 manage.py loaddata categories`
 - Start with `categories` since the products need to know which category to go in
 - Then upload all products: `python3 manage.py loaddata products`
+
+## For Clothing sizes
+- migrate `has_sizes = models.BooleanField(default=False, null=True, blank=True)`
+- `python3 manage.py shell`
+- `In [1]: from products.models import Product`
+- `kdbb = ['kitchen_dining', 'bed_bath']` (To get the products that need to be excluded)
+- `clothes = Product.objects.exclude(category__name__in=kdbb)` (Excludes kdbb categories)
+- `clothes.count()` should show how many products are available for sizes
+- ```python
+    In [5]: for item in clothes: 
+   ...:     item.has_sizes=True 
+   ...:     item.save() 
+   ...: 
+   ```
+- Check if the right amount of clothes have sizes: `In [6]: Product.objects.filter(has_sizes=True).count()`
+- Exit the shell: `exit()`
+- Use a with statement, like in product_detail.html
