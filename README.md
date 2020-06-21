@@ -86,3 +86,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Check if the right amount of clothes have sizes: `In [6]: Product.objects.filter(has_sizes=True).count()`
 - Exit the shell: `exit()`
 - Use a with statement, like in product_detail.html
+
+## Toasts
+- Use toast templates in the includes
+- Get the product item_id form the Product models in the bag views and display a success message through the else statement
+- Display the message via base.html in a for loop and with statement with levels and use the script underneath it all in base.html
+- Style the messages in the CSS
