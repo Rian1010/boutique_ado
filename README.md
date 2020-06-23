@@ -155,3 +155,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ## Checkout app
 - In __init__.py, add `default_app_config = 'checkout.apps.CheckoutConfig'` for the signals to work from signals.py (make sure that apps.py imports it in a ready function)
 - Restart the server for it to work, if it is already running
+
+### Stripe testing
+- 4242 4242 4242 4242 04 24 242 42424
+- For extra authentication from stripe
+    - 4000 0025 0000 3155 04 24 242 44242
+- After adding the checkout success overlay with the loading icon, restart the server, if it is already running
