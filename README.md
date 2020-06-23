@@ -151,3 +151,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ### Testing if a payment worked
 - Go to Stripe Dashboard > Developers > Events
+
+## Checkout app
+- In __init__.py, add `default_app_config = 'checkout.apps.CheckoutConfig'` for the signals to work from signals.py (make sure that apps.py imports it in a ready function)
+- Restart the server for it to work, if it is already running
