@@ -60,6 +60,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ```
+    - In TEMPLATES, OPTIONS add: 
+    ```python 
+    'django.template.context_processors.media',
+    ```
 - In the main urls.py file:
 ```python 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -92,3 +96,58 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Get the product item_id form the Product models in the bag views and display a success message through the else statement
 - Display the message via base.html in a for loop and with statement with levels and use the script underneath it all in base.html
 - Style the messages in the CSS
+
+## Django Crispy Forms (For the checkout app in this case)
+- `sudo pip3 install django-crispy-forms`
+- In settings.py:
+    - In INSTALLED_APPS:
+        -   ```python
+            # Other
+            'crispy_forms',
+            ```
+    -   ```python
+        CRISPY_TEMPLATE_PACK = 'bootstrap4'
+        ```
+    - In TEMPLATES: 
+        -   ```python
+            'builtins': [
+                    'crispy_forms.templatetags.crispy_forms_tags',
+                    'crispy_forms.templatetags.crispy_forms_field',
+                ]
+            ```
+- `pip3 freeze > requirements.txt`
+
+## Stripe 
+- Get `<script src="https://js.stripe.com/v3/"></script>` from https://stripe.com/docs/payments/checkout/accept-a-payment and put it into the base.html head
+- Do everything needed to do with the assistance of the stripe docs
+- sudo pip3 install stripe
+
+- Since we can't render Django template variables in external javascript files, we need to use a built-in template filter called json_script to render them here and then, we can access them in the external file: `{{ stripe_public_key|json_script:"id_stripe_public_key" }}` and `{{ client_secret|json_script:"id_client_secret" }}`
+- These need to be added to the context in views.py as `stripe_public_key` and `client_secret`
+- Their values should be seen in the script tag in the devtools
+- Then, work on stripe_elements.js
+- Use CSS from stripe JS docs too
+- Make sure to add the JS throught script tag in checkout.html `<script src="{% static 'checkout/js/stripe_elements.js' %}"></script>`
+- The payment input should be working with the card number turning red, if false, for example through 4000 0000 0000 0000
+- After adjusting stripe in the views for it to get the bag's total value, use `sudo pip3 install stripe` and import stripe in views.py in the checkout app
+
+- In settings.py:
+    -   ```python
+        STRIPE_CURRENCY = 'usd'
+        STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+        STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+        ```
+- In env.py use the following structure:
+    -   ```python 
+        import os
+
+        os.environ.setdefault('STRIPE_PUBLIC_KEY', '')
+        os.environ.setdefault('STRIPE_SECRET_KEY', '')
+        ```
+
+- In views.py, set the secret key on stripe after creating the payment intent at the top of the function and create an intent variable besides the others too
+
+- Add code in stripe_elements.js to handle form submit
+
+### Testing if a payment worked
+- Go to Stripe Dashboard > Developers > Events
