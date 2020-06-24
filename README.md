@@ -161,3 +161,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - For extra authentication from stripe
     - 4000 0025 0000 3155 04 24 242 44242
 - After adding the checkout success overlay with the loading icon, restart the server, if it is already running
+
+### Webhooks on Stripe
+#### Localhost
+- `brew cask install ngrok`
+- `ngrok http 8000`
+- Add the Forwarding link to ALLOWED_HOSTS and use the link
+- Rerun that command every time the project gets started
+- Use the command from the second step from https://ngrok.com/
+
+- If not on Mac:
+    - Go to https://ngrok.com/
+    - Login with Github

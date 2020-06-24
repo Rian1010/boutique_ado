@@ -84,7 +84,7 @@ def checkout(request):
         # Create the current_bag variable, making sure not to overwrite the bag variable that already exists
         current_bag = bag_contents(request)
         total = current_bag['grand_total']
-        # Stripe requiers the amount as an integer
+        # Stripe requires the amount as an integer
         stripe_total = round(total * 100)
         # Set the secret key on stripe after creating the payment intent at the top of the function
         stripe.api_key = stripe_secret_key
