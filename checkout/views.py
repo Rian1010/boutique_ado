@@ -90,8 +90,8 @@ def checkout(request):
         stripe.api_key = stripe_secret_key
         # Create the payment intent with stripe.payment.intent.create, giving it the amount and the currency
         intent = stripe.PaymentIntent.create(
-            amount = stripe_total,
-            currency = settings.STRIPE_CURRENCY
+            amount=stripe_total,	
+            currency=settings.STRIPE_CURRENCY,
         )
 
         print(intent)

@@ -32,7 +32,7 @@ var card = elements.create('card', {style: style});
 // Mount the card element to the div created before 
 card.mount('#card-element');
 
-card.addEventListener('change', function() {
+card.addEventListener('change', function(event) {
     var errorDiv = document.getElementById("card-errors");
     if (event.error) {
         var html = `
@@ -45,7 +45,7 @@ card.addEventListener('change', function() {
     } else {
         errorDiv.textContent = '';
     }
-})
+});
 
 // Handle form submit
 var form = document.getElementById('payment-form');

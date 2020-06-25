@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 
 
-class StripeWH_handler:
-    """Handle Stripe Webhooks"""
+class StripeWH_Handler:	
+    """Handle Stripe webhooks"""
 
     # The init method of the class is a setup method that's called every time an instance of the class is created
     def __init__(self, request):
@@ -13,7 +13,7 @@ class StripeWH_handler:
         Handle a generic/unknown/unexpected webhook event
         """
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}',
+            content=f'Unhandled webhook received: {event["type"]}',
             status=200)
             
     def handle_payment_intent_succeeded(self, event):
