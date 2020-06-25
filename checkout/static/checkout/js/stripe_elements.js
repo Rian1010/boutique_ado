@@ -32,7 +32,7 @@ var card = elements.create('card', {style: style});
 // Mount the card element to the div created before 
 card.mount('#card-element');
 
-card.addEventListener('change', function(event) {
+card.addEventListener('change', function (event) {
     var errorDiv = document.getElementById("card-errors");
     if (event.error) {
         var html = `
@@ -50,20 +50,60 @@ card.addEventListener('change', function(event) {
 // Handle form submit
 var form = document.getElementById('payment-form');
 
-form.addEventListener('submit', function(ev) {
+form.addEventListener('submit', function (ev) {
+    // When the user clicks the  submit button, the following happens:
     // prevent default to prevent POST 
     ev.preventDefault();
     // Disable the card element and submit button, before calling out to stripe, 
     // so that multiple submissions are prevented
-    card.update({ 'disabled': true});
+    card.update({
+        'disabled': true
+    });
     $('#submit-button').attr('disabled', true);
     $('#payment-form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
-    // Send the card information securely to stripe
-    stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-            card: card,
-        }
+
+    var saveInfo = Boolean($('#id-save-info').attr('checked'));
+    // From using {% csrf_token %} in the form
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    var postData = {
+        'csrfmiddlewaretoken': csrfToken,
+        'client_secret': clientSecret,
+        'save_info': saveInfo,
+    };
+    var url = '/checkout/cache_checkout_data/';
+
+    $.post(url, postData).done(function () {
+        // Send the card information securely to stripe
+        stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    name: $.trim(form.full_name.value),
+                    phone: $.trim(form.phone_number.value),
+                    email: $.trim(form.email.value),
+                    address:{
+                        line1: $.trim(form.street_address1.value),
+                        line2: $.trim(form.street_address2.value),
+                        city: $.trim(form.town_or_city.value),
+                        country: $.trim(form.country.value),
+                        state: $.trim(form.county.value),
+                    }
+                }
+            },
+            shipping: {
+                name: $.trim(form.full_name.value),
+                phone: $.trim(form.phone_number.value),
+                address: {
+                    line1: $.trim(form.street_address1.value),
+                    line2: $.trim(form.street_address2.value),
+                    city: $.trim(form.town_or_city.value),
+                    country: $.trim(form.country.value),
+                    postal_code: $.trim(form.postcode.value),
+                    state: $.trim(form.county.value),
+                }
+            },
+        })
     }).then(function(result) {
         if (result.error) {
             // If statement for errors
@@ -74,10 +114,14 @@ form.addEventListener('submit', function(ev) {
                 </span>
                 <span>${result.error.message}</span>`;
             $(errorDiv).html(html);
+            // If there's an error in the form then the loading overlay will be hidden, the card element 
+            // re-enabled and the error displayed for the user
             $('#payment-form').fadeToggle(100);
             $('#loading-overlay').fadeToggle(100);
             // If there is an error, allow the user to fix it by enabling the card element and submit button
-            card.update({ 'disabled': false});
+            card.update({
+                'disabled': false
+            });
             $('#submit-button').attr('disabled', false);
         } else {
             // Submit the form, if successful
@@ -86,4 +130,8 @@ form.addEventListener('submit', function(ev) {
             }
         }
     });
+}).fail(function () {
+    // If anything goes wrong posting the data to our view, reload the page and display the error 
+    // without ever charging the user. The error will be in django messages
+    location.reload();
 });

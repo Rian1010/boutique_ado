@@ -35,21 +35,24 @@ def webhook(request):
         return HttpResponse(content=e, status=400)
 
     # Set up a webhook handler
+    # Create an instance of it, passing in the request
     handler = StripeWH_Handler(request)
 
-    # Map webhook events to relevant handler functions
+    # Map webhook events to relevant handler functions (With its methods inside of the handler as values)
     event_map = {
         'payment_intent.succeeded': handler.handle_payment_intent_succeeded,
         'payment_intent.payment_failed': handler.handle_payment_intent_payment_failed,
     }
 
-    # Get the webhook type from Stripe
+    # Get the webhook type from Stripe (payment_intent.success or payment_intent_payment.failed, etc.)
     event_type = event['type']
 
     # If there's a handler for it, get it from the event map
-    # Use the generic one by default
+    # Use the generic one by default 
+    # Find the key from the dictionary and assign its value to a variable called event_handler
     event_handler = event_map.get(event_type, handler.handle_event)
 
-    # Call the event handler with the event
+    # Call the event handler with the event (Get the response from the webhook handler)
     response = event_handler(event)
+    # Return response to Stripe
     return response
