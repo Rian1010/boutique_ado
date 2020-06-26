@@ -178,3 +178,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - `sudo pip3 install django-countries`
 - In models.py for the checkout app
     - `from django_countries.fields import CountryField`
+
+## Login / Registration
+- Go to templates/allauth/templates/account
+- Edit its base.html, account_inactive.html, login.html and email_confirmation.html
