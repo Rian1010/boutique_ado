@@ -173,3 +173,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - If not on Mac:
     - Go to https://ngrok.com/
     - Login with Github
+
+## Country Fields In Models
+- `sudo pip3 install django-countries`
+- In models.py for the checkout app
+    - `from django_countries.fields import CountryField`

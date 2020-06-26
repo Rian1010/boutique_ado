@@ -50,6 +50,17 @@ def checkout(request):
             'county': request.POST['county'],
         }
         order_form = OrderForm(form_data)
+        # Get the client secret if the form is valid
+        if order_form.is_valid():
+            # Add it to the model
+            # As a quick optimization, prevent multiple save events from being executed on the database, use
+            # commit=False to prevent the first one from happening
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            # Dump it to a JSON string and set it on the order
+            order.original_bag = json.dumps(bag)
+            order.save()
         # Save the order, if the form is valid
         if order_form.is_valid():
             # Save the order to get the order number argument and other order information
