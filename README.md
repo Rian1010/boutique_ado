@@ -182,3 +182,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ## Login / Registration
 - Go to templates/allauth/templates/account
 - Edit its base.html, account_inactive.html, login.html and email_confirmation.html
+
+## Heroku 
+- Create a new app on Heroku
+- In Resources, add the postgress add-on
+- `sudo pip3 install dj_database_url`
+- `sudo pip3 install psycopg2-binary`
+- `pip3 freeze > requirements.txt`
+- In settings.py:
+    - import dj_database_url
+    - Comment out DATABASES and make a new one:
+        -   ```python
+                DATABASES = {
+                    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+                }
+            ```
+- In env.py: 
+    -   ```python 
+            os.environ.setdefault('DATABASE_URL', '')
+        ```
+
+- `python3 manage.py showmigrations`
+- `python3 manage.py migrate`
+- The order of the following is important, as products rely on categories
+    - `python3 manage.py loaddata categories`
+    - `python3 manage.py loaddata products`
+- Again: `python3 manage.py createsuperuser`
+- Comment out the new DATABASES in settings.py and get the old one back, then deploy to Github
