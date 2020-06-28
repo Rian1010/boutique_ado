@@ -194,13 +194,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     - Comment out DATABASES and make a new one:
         -   ```python
                 DATABASES = {
-                    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+                    'default': dj_database_url.parse(os.environ.get('DATABASE_URL(actual password NOT env.py'))
                 }
             ```
-- In env.py: 
-    -   ```python 
-            os.environ.setdefault('DATABASE_URL', '')
-        ```
 
 - `python3 manage.py showmigrations`
 - `python3 manage.py migrate`
@@ -209,3 +205,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     - `python3 manage.py loaddata products`
 - Again: `python3 manage.py createsuperuser`
 - Comment out the new DATABASES in settings.py and get the old one back, then deploy to Github
+- Change the DATABASES section in settings.py as:
+    -   ```python 
+        if 'DATABASE_URL' in os.environ:
+            DATABASES = {
+            '   default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+            }
+
+        else:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                }
+            }
+        ```
+
+- `sudo pip3 install gunicorn`
+- Create a Procfile and add in it: `web: gunicorn boutique_ado.wsgi:application`
+- `pip3 freeze > requirements.txt`
+- `heroku login` 
+- To disable statics on Heroku:
+    - `heroku config:set DISABLE_COLLECTSTATIC=1, --app rian-boutique-ado` (add the --add flag, if there is more than one app)
+- Add ALLOWED_HOSTS for Heroku in settings.py
+- In env.py: 
+    -   ```python 
+            os.environ.setdefault('DATABASE_URL', '')
+        ```
