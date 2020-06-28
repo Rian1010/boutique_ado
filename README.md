@@ -228,7 +228,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - To disable statics on Heroku:
     - `heroku config:set DISABLE_COLLECTSTATIC=1, --app rian-boutique-ado` (add the --add flag, if there is more than one app)
 - Add ALLOWED_HOSTS for Heroku in settings.py
-- In env.py: 
-    -   ```python 
-            os.environ.setdefault('DATABASE_URL', '')
-        ```
+
+- Deploy to Github
+- Deploy to Heroku:
+    - `git push heroku master`
+    - Initialize heroku git remote, if there is a fatal error: `heroku git:remote -a rian-boutique-ado`
+    - Try again: `git push heroku master`
+    - Check if the link to the heroku page works (statics won't work just yet and should be added later on)
+        - In case it does not work, check if the config. vars on Heroku match with the env vars in env.py, if the requirements.txt file and Procfile are updated or visit: https://devcenter.heroku.com/articles/error-codes#:~:text=Whenever%20your%20app%20experiences%20an,error%20information%20to%20your%20logs.
+        - MUST have a new secret key in Heroku config. vars
+    - In settings.py, replace DEBUG with `DEBUG = 'DEVELOPMENT' in os.environment`, so DEBUG is only True, if there is a DEVELOPMENT variable
+- Go to the 'Deployment' section on Heroku and set automatic deployment
