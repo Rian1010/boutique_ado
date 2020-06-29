@@ -127,7 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Their values should be seen in the script tag in the devtools
 - Then, work on stripe_elements.js
 - Use CSS from stripe JS docs too
-- Make sure to add the JS throught script tag in checkout.html `<script src="{% static 'checkout/js/stripe_elements.js' %}"></script>`
+- Make sure to add the JS throught script tag in checkout.html `static 'checkout/js/stripe_elements.js'`
 - The payment input should be working with the card number turning red, if false, for example through 4000 0000 0000 0000
 - After adjusting stripe in the views for it to get the bag's total value, use `sudo pip3 install stripe` and import stripe in views.py in the checkout app
 
