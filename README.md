@@ -32,7 +32,7 @@ LOGIN_REDIRECT_URL = '/'
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 ```
 
-- Use `{% load static %}` for the base.html to get the static files
+- Use `load static` for the base.html to get the static files
 - Move the scripts to the head for them to load as early as possible
 
 ## After setting up base.html and the home django-app (with its url.py)
