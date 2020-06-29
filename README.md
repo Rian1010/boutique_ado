@@ -239,3 +239,48 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
         - MUST have a new secret key in Heroku config. vars
     - In settings.py, replace DEBUG with `DEBUG = 'DEVELOPMENT' in os.environment`, so DEBUG is only True, if there is a DEVELOPMENT variable
 - Go to the 'Deployment' section on Heroku and set automatic deployment
+
+## AWS
+- Create a bucket unblocking publication
+- Click on the bucket, go to CORS
+- CORS configurations
+    ```html
+    <?xml version="1.0" encoding="UTF-8"?>
+    <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <MaxAgeSeconds>3000</MaxAgeSeconds>
+    <AllowedHeader>Authorization</AllowedHeader>
+    </CORSRule>
+    </CORSConfiguration>
+    ```
+- Go to Permissions and click on Policy generator
+- Select Type of Policy: S3 Bucket Policy, Principal: *, Amazon Resource Name (ARN): (get it from previous the permissions page), then click on Add Statement 
+- Click on Generate Policy, copy the code and paste it into the Bucket Policy under Permissions
+- Add /* at the end of the ARN Resource
+
+- Under Public access and Group, click on 'Everyone' and select 'List objects'
+- Go to IAM, Group section and create a new Group for the user to live in
+- Give it a reasonable name, such as: manage-boutique-ado
+- Since there is no policy at this point, click on next step and create
+
+- Then create an access policy giving the group access to the s3 bucket we created
+- Click on Policies and then on Create policies
+- Click on the JSON tab and import managed policy
+- Search for S3 and import the AWS Managed Policy AmazonS3FullAccess
+- Open S3 on a new tab, open the bucket, go to Permissions and Bucket Policy to copy the ARN
+- Go back to the JSON tab and replace the Resource section with a list, in which one ARN needs to be added, and then the same ARN again, under it with /* at the end of it to have the bucket itself, and also another rule for all files/folders in the bucket
+- Click on Review Policy
+- Give it a name, like: rian-boutique-ado-policy
+- Give it a description, such as: Access to S3 bucket for Boutique Ado static files
+- Click on Groups, the group name, the Attach policy button, search for the policy just created and select it, then click on Attach Policy
+
+- And finally, assign the user to the group so it can use the policy to access all our files.
+- Go to the Users page, click on add user and give it a name, such as 'boutique-ado-staticfiles-user' 
+- Select Programmatic access in Access type and click on Next: Permissions
+- Now we can put the user in our group. Which as you can see here has our policy attached.
+- Select the group name (manage-boutique-ado) and click on Next: Tags
+- Click on Next: Review and then on Create User
+- IMPORTANT!!! Download the csv. file which will contain this user's access key and secret access key, which should be used to authenticate them from the Django app
+- IT CANNOT BE DOWNLOADED AGAIN, SO KEEP IT SAFE
