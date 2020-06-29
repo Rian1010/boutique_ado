@@ -328,7 +328,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
         STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
         MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
     ```
-
+- Remove the DISABLE_COLLECTSTATIC variable from the config. vars on Heroku (django will collectstatic files automatically and upload them to s3, after deployment)
 - Upload onto Github
 - And then issue a git push, which will trigger an automatic deployment to Heroku
 - Check the S3 Overview, there should be a static file, once uploaded onto Heroku
