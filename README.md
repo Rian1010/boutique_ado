@@ -250,11 +250,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     <CORSRule>
     <AllowedOrigin>*</AllowedOrigin>
     <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>HEAD</AllowedMethod>
     <MaxAgeSeconds>3000</MaxAgeSeconds>
     <AllowedHeader>Authorization</AllowedHeader>
     </CORSRule>
     </CORSConfiguration>
     ```
+- Under Properties, click on static website hosting and input `index.html` and `error.html`
 - Go to Permissions and click on Policy generator
 - Select Type of Policy: S3 Bucket Policy, Principal: *, Amazon Resource Name (ARN): (get it from previous the permissions page), then click on Add Statement 
 - Click on Generate Policy, copy the code and paste it into the Bucket Policy under Permissions
