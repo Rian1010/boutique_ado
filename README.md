@@ -284,3 +284,47 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Click on Next: Review and then on Create User
 - IMPORTANT!!! Download the csv. file which will contain this user's access key and secret access key, which should be used to authenticate them from the Django app
 - IT CANNOT BE DOWNLOADED AGAIN, SO KEEP IT SAFE
+
+- `sudo pip3 install boto3`
+- `sudo pip3 install django-storages`
+- `pip3 freeze > requirements.txt`
+
+- In settings.py:
+    - Add `'storages'` to the INSTALLED_APPS
+    -   ```python 
+        if 'USE_AWS' in os.environ:
+            # Bucket Config
+            AWS_STORAGE_BUCKET_NAME = 'rian-boutique-ado'
+            AWS_S3_REGION_NAME = 'eu-central-1'
+            AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+            AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+            AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+        ```
+    - IMPORTANT!!! Variables MUST be hidden, otherwise someone else could get them and add things to the website, which would go on the AWS bill
+- Add those variables on the config. vars on Heroku through the csv. file
+- Add USE_AWS and set it to True in the Heroku config. vars
+
+- Add a custom_storage.py file with the content it has in this project too
+- Change the if statement in the settings.py to the following:
+    ```python
+    # IMPORTANT!!! 
+    # Variables MUST be hidden, otherwise someone else could get them 
+    # and add things to the website, which would go on the AWS bill
+    if 'USE_AWS' in os.environ:
+        # Bucket Config
+        AWS_STORAGE_BUCKET_NAME = 'rian-boutique-ado'
+        AWS_S3_REGION_NAME = 'eu-central-1'
+        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+        # Static and media files
+        STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+        STATICFILES_LOCATION = 'static'
+        DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+        MEDIAFILES_LOCATION = 'media'
+
+        # Override static and media URLs in production
+        STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+    ```
