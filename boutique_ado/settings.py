@@ -185,7 +185,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # IMPORTANT!!! 
 # Variables MUST be hidden, otherwise someone else could get them 
-# and add things to the website, which would go on the AWS bill
+# and add things to the website, which would go on the AWS bill 
 if 'USE_AWS' in os.environ:
     # Bucket Config
     AWS_STORAGE_BUCKET_NAME = 'rian-boutique-ado'
