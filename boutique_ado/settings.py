@@ -183,7 +183,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# IMPORTANT!!! 
+# IMPORTANT!!!  
 # Variables MUST be hidden, otherwise someone else could get them 
 # and add things to the website, which would go on the AWS bill 
 if 'USE_AWS' in os.environ:
