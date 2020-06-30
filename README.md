@@ -352,12 +352,41 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - After adding the files, click on next and in the option dropdown, select 'Grant public read access to this object(s)'
 - Then click next through to the end and click on upload
 
+## Stripe Webhook new link
+- Don't forget to add the new Heroku link with /checkout/wh/ to the webhook on the Stripe website, selecting 'receive all events' and add endpoint
+- Add the Signing Secret to the Heroku config. vars with STRIPE_WE_SECRET as key, (So it needs to match with the variable in settings.py)
+- Send a test handler to make sure that the webhook is working
+    - Selecting the event type: 'account.external_account.created', should give the response, 'Unhandled webhook received: account.external_account.created'
+
+## Gmail
+- Got to Gmail
+- Click on the settings button, then on the see all settings button
+- Click on Accounts and Import and then 'Other Google Account settings'
+- Click on Security and it the 2 step notification is on, (phone needed for verification), click on App password
+- Add the 16 character long password to the Heroku config. vars, as for eg. EMAIL_HOST_PASS and also add EMAIL_HOST_USER set to my Gmail account
+- Get rid of the DEFAULT_FROM_EMAIL and EMAIL_BACKEND variables in the settings.py file and add the following:
+    -   ```python
+        if 'DEVELOPMENT' in os.environ:
+            EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+            DEFAULT_FROM_EMAIL = 'rtegally1098@gmail.com'
+        else:
+            EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+            EMAIL_USE_TLS = True
+            EMAIL_PORT = 587
+            EMAIL_HOST = 'smtp.gmail.com'
+            EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+            EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
+            DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+        ```
+
 
 ## Side notes
-- If needed to login with superuser on the website, comment out the two following lines of code in the models.py of the profiles app:
+- If needed to login with superuser on the website, comment out the two following lines of code (not sure if right or not, but it is) in the models.py of the profiles app:
     ```python
     # if created:
         UserProfile.objects.create(user=instance)
     # Existing users: just save the profile
     # instance.userprofile.save()
     ```
+!!! Not sure if this or nothing (unclear from course) !!!
