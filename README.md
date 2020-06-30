@@ -334,3 +334,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Upload onto Github
 - And then issue a git push, which will trigger an automatic deployment to Heroku
 - Check the S3 Overview, there should be a static file, once uploaded onto Heroku 
+
+## Python Refactoring on Gitpod
+- `python3 -m flake8`
+- This command should show all the pep8 errors
+- Can ignore the errors on files that are automatically generated, such as migrations, since automatically generated files may intentionally ignore style rules for efficiency reasons, and because as developers we usually don't need to touch them.
+- Unused imports can come from files that Django migrations generated that one may or may not be using, so depending on the usage, the file and import or just the import can be deleted
