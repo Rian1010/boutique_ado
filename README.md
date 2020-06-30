@@ -262,7 +262,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - Click on Generate Policy, copy the code and paste it into the Bucket Policy under Permissions
 - Add /* at the end of the ARN Resource
 
-- Under Public access and Group, click on 'Everyone' and select 'List objects'
+- Under Public access and Group, click on 'Everyone' and select 'List objects' and the rest of the (4) checkboxes too
 - Go to IAM, Group section and create a new Group for the user to live in
 - Give it a reasonable name, such as: manage-boutique-ado
 - Since there is no policy at this point, click on next step and create
@@ -313,6 +313,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     # Variables MUST be hidden, otherwise someone else could get them 
     # and add things to the website, which would go on the AWS bill
     if 'USE_AWS' in os.environ:
+        # Cache control
+        AWS_S3_OBJECT_PARAMETERS = {
+            'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+            'CacheControl': 'max-age=94608000',
+        }
+        
         # Bucket Config
         AWS_STORAGE_BUCKET_NAME = 'rian-boutique-ado'
         AWS_S3_REGION_NAME = 'eu-central-1'
