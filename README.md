@@ -318,7 +318,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
             'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
             'CacheControl': 'max-age=94608000',
         }
-        
+
         # Bucket Config
         AWS_STORAGE_BUCKET_NAME = 'rian-boutique-ado'
         AWS_S3_REGION_NAME = 'eu-central-1'
@@ -346,3 +346,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - This command should show all the pep8 errors
 - Can ignore the errors on files that are automatically generated, such as migrations, since automatically generated files may intentionally ignore style rules for efficiency reasons, and because as developers we usually don't need to touch them.
 - Unused imports can come from files that Django migrations generated that one may or may not be using, so depending on the usage, the file and import or just the import can be deleted
+
+## S3 Media
+- Add a media file next to the static file to add all of the images in there
+- After adding the files, click on next and in the option dropdown, select 'Grant public read access to this object(s)'
+- Then click next through to the end and click on upload
+
+
+## Side notes
+- If needed to login with superuser on the website, comment out the two following lines of code in the models.py of the profiles app:
+    ```python
+    # if created:
+        UserProfile.objects.create(user=instance)
+    # Existing users: just save the profile
+    # instance.userprofile.save()
+    ```
