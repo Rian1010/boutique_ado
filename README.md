@@ -377,9 +377,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
             EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
             EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
             DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
-
         ```
 
+- !!! Make sure to remove the DEVELOPMENT config. var on Heroku, but keep locally True for it to send an email to the email address through the Heroku website and an email to the console if tested locally !!!
 
 ## Side notes
 - If needed to login with superuser on the website, comment out the two following lines of code (not sure if right or not, but it is) in the models.py of the profiles app:
